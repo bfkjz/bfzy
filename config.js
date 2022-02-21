@@ -16,7 +16,7 @@ var play_url_list={
 }
 
 //代理请求接口
-var proxyurl = "http://apibf.herokuapp.com"; //http://127.0.0.1:1452/222/api.php
+var proxyurl = "https://apibf.herokuapp.com"; //http://127.0.0.1:1452/222/api.php
 
 //过滤排除加载类型
 var ex = ["资讯", "公告", "头条", "伦理片", "邵氏电影","三级片","体育赛事","伦理","论理","倫理","福利","激情","理论","写真","情色","美女","街拍","赤足","性感","里番","VIP"];
