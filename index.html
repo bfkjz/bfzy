@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>缤纷资源</title>
+  <script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
+  <script src="./config.js"></script>
+  <script src="./js/bg/starlight.js"></script>
+  <script src="./js/bftip.js"></script>
+  <link href="./css/main.css" rel="stylesheet" type="text/css">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+</head>
+
+<body>
+  <div id="nav">
+    <div id="nav_type"
+      style="color: #fff;margin: 30px;flex-wrap: wrap;display: flex;align-items: center;justify-content: center;font-weight:600;">
+    </div>
+    <div id="typename_box" style="width: 60%;margin: 10px auto;color: rgb(255 255 255);flex-wrap: wrap;display: none;align-items: center;justify-content: center;font-weight: 600;font-size: 0.9em;"></div>
+    <div style="text-align: center;margin-bottom: 50px;">
+      <h2 class="subtitle"></h2>
+      <h3 class="shici-from"></h3>
+    </div>
+    <div class="starlight" style="height: 100%;width: 100%;"></div>
+  </div>
+  <div class="search_box">
+    <select id="select"></select>
+    <input type="text" id="u_input">
+    <img onclick="search()" 
+      src="data:image/png;base64,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" />
+  </div>
+  <div id="loading" style="
+  width: 100%;
+  height: 100%;
+  background: #4a484845;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+">
+    <div class="loading" >
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+  <div id="content" class="box"></div>
+  <div id="page_box" class="page_box box"></div>
+  <div id="go_top" class="box">回到顶部</div>
+</body>
+<script>
+  $(function () {
+    
+    for (apiname in vod_url_list) {
+      $('#select').append(`<option value="${vod_url_list[apiname]}">${apiname}</option>`);
+
+    }
+
+    $.ajax({
+      url: 'https://v1.jinrishici.com/all',
+      type: 'GET', //GET
+      async: false,  //true或false,是否异步    
+      dataType: 'json',   //返回的数据格式：json/xml/html/script/jsonp/text
+      success: function (data) {
+        var shici = data.content;
+        var from = data.origin;
+        var author = data.author;
+        $('.subtitle').html(shici);
+        $('.shici-from').html("——  " + author + "《" + from + "》");
+
+      }
+
+    });
+
+    /***/
+    // $('#loading').css("display","flex");
+    // loadcont($('#select option').attr("value"),"","","");
+    $.when(loadcont($('#select option').attr("value"),"","","")).done(function(response){data_list = eval("(" + response + ")");loadconts();$('#loading').css("display","none");});
+    // 写入数据
+localStorage.setItem('apiurl',$('#select option').attr("value"));
+
+    $("#select").change(function () {
+      $('#loading').css("display","flex");
+      $.when(loadcont($("#select option:selected").val().toString(),"",$('#u_input').val(),"")).done(function(response){data_list = eval("(" + response + ")");loadconts();$('#loading').css("display","none");});
+    // 写入数据
+localStorage.setItem('apiurl',$("#select option:selected").val().toString());
+    });
+
+    //回到顶部
+    $(window).scroll(function () {
+      var topp = $('html,body').scrollTop();
+      if (topp > 500) {
+        $("#go_top").css("display", "block");
+
+      } else { $("#go_top").css("display", "none"); };
+
+    })
+    $("#go_top").on("click", function () {
+      $("html,body").animate({ scrollTop: 0 }, 500);
+
+    })
+    //
+
+  })
+
+  function home(){
+    
+    $.when(loadcont(localStorage.getItem('apiurl'),"","","")).done(function(response){data_list = eval("(" + response + ")");loadconts();$('#loading').css("display","none");});
+    $("#u_input").val("");
+    localStorage.removeItem('typeid');
+  }
+
+  function tags(typeid){
+    
+    $.when(loadcont(localStorage.getItem('apiurl'),typeid,"","")).done(function(response){data_list = eval("(" + response + ")");loadconts();$('#loading').css("display","none");});
+    localStorage.setItem('typeid',typeid);
+  }
+
+  var data_list = "";
+  function loadcont(api_url,t,wd,pg) {
+    $('#loading').css("display","flex");
+    if(t=="undefined"){t=""}
+    if(wd=="undefined"){wd=""}
+    if(pg=="undefined"){pg=""}
+    //**********//
+    //var apiurl = $('#select option').attr("value");
+    var apiurl = api_url;
+    //console.log(proxyurl + '?' + apiurl + '/provide/vod/?ac=list&t='+t+'&wd='+wd+'&pg='+pg)
+    var defer = $.Deferred();
+    $.ajax({
+      url: proxyurl + '?' + apiurl + '/provide/vod/?ac=list&t='+t+'&wd='+wd+'&pg='+pg,
+      type: 'get',
+      // beforeSend: function () {
+      //   // bftip("0","加载中");
+      // },
+      // complete: function () {
+      //   $('#loading').css("display","none");
+      // },
+      success: function (response) {
+        //data_list = eval("(" + response + ")");
+        defer.resolve(response);
+      }
+    });
+    return defer.promise();
+  }
+
+  function loadconts(){
+    var type_div = "";
+    var list_div = "";
+    //var nav_type_name ="";
+    var nav_type_name = `<span onclick="home()">首页</span>`;
+    var data_list_class = data_list.class;
+    var data_list_list = data_list.list;
+    // console.log(data_list_list);
+    // console.log(data_list);
+    $("#u_input").attr("placeholder", "共有 " + data_list.total + " 部影片");
+    for (ex_i in ex) {
+      for (class_i in data_list_class) {
+        if (data_list_class[class_i].type_name == ex[ex_i]) {
+          delete data_list_class[class_i];
+        }
+      }
+
+    }
+    for (ntn_i in ntn) {
+      for (c_i in data_list_class) {
+        if (data_list_class[c_i].type_name == ntn[ntn_i]) {
+          nav_type_name += `<span onclick="type_name('${data_list_class[c_i].type_id}')">${data_list_class[c_i].type_name}</span>`;
+
+        }
+      }
+
+    }
+    $('#nav_type').html("");
+    $('#nav_type').append(nav_type_name);
+    // console.log(data_list_class);
+    for (typename in data_list_class) {
+      type_div += `<span onclick="type_name('${data_list_class[typename].type_id}')">${data_list_class[typename].type_name}</span>`;
+    }
+
+    $('#nav_type').append("<span onclick='typenamebox()'>更多</span>");
+    $('#typename_box').html("");
+    $('#typename_box').append(type_div);
+
+
+    for (ex_it in ex) {
+      for (list_i in data_list_list) {
+        if (data_list_list[list_i].type_name == ex[ex_it]) {
+          delete data_list_list[list_i];
+        }
+      }
+
+    }
+    for (list_i in data_list_list) {
+      list_div +=
+        `
+<div class="item">
+  <div class="title_text">
+      <a onclick="get_v_name('${data_list_list[list_i].vod_name}')" href="./info.html?video_id=${data_list_list[list_i].vod_id}" target="_blank">${data_list_list[list_i].vod_name}</a>
+      <span>${data_list_list[list_i].vod_remarks}</span>
+  </div>
+  <div class="tags"><a onclick="tags(${data_list_list[list_i].type_id})">${data_list_list[list_i].type_name}</a></div>
+  <div class="list_date">${data_list_list[list_i].vod_time}</div>
+</div>
+`;
+
+    }
+    $('#content').html("");
+    $('#content').append(list_div);
+    
+    $('#page_box').html("");
+    $('#page_box').append(`<div id="previous_box" style="text-align: center;flex: 1 1 auto;"><div class="page_bt" onclick="previous('${data_list.page}')">上一页</div></div><span>${data_list.page}</span>/${data_list.pagecount}<div id="next_box" style="text-align: center;flex: 1 1 auto;"><div class="page_bt" onclick="next('${data_list.page}','${data_list.pagecount}')">下一页</div></div>`);
+
+    if(Number(data_list.page)<=1){
+        $("#previous_box").css("cursor","not-allowed");
+        $("#previous_box div").css({"pointer-events":"none","color": "rgb(148, 148, 148)"});
+    };
+    if(Number(data_list.page)>=Number(data_list.pagecount)){
+        $("#next_box").css("cursor","not-allowed");
+        $("#next_box div").css({"pointer-events":"none","color": "rgb(148, 148, 148)"});
+    };
+
+
+
+    //**********//
+
+  }
+
+  function previous(num,pages){
+    var t = localStorage.getItem('typeid');
+    var number =  Number(num);
+    //console.log(number)
+    if(number<=1){
+        console.log("已经是第一页了");
+        $("#previous_box").css("cursor","not-allowed");
+        $("#previous_box div").css({"pointer-events":"none","color": "rgb(148, 148, 148)"});
+    }else{
+        number = number - 1;
+        if(t == null){
+          t = "";
+        }
+        
+        $.when(loadcont(localStorage.getItem('apiurl'),t,$('#u_input').val(),number.toString())).done(function(response){data_list = eval("(" + response + ")");loadconts();$('#loading').css("display","none");});
+    }
+
+  }
+  function next(num,pages){
+    var t = localStorage.getItem('typeid');
+    var number =  Number(num);
+    var pages_ =Number(pages);
+    //console.log(number)
+    if(number >=pages_){
+        console.log("已经是最一页了")
+    }else{
+        number = number + 1;
+        if(t == null){
+          t = "";
+        }
+        
+        $.when(loadcont(localStorage.getItem('apiurl'),t,$('#u_input').val(),number.toString())).done(function(response){data_list = eval("(" + response + ")");loadconts();$('#loading').css("display","none");});
+    }
+    
+  }
+  function type_name(type_id){
+    
+    $.when(loadcont(localStorage.getItem('apiurl'),type_id,"","")).done(function(response){data_list = eval("(" + response + ")");loadconts();$('#loading').css("display","none");});
+  }
+
+  function search(){
+if($('#u_input').val() == ""){
+  console.log("搜索词不能为空")
+  bftip("2","搜索词不能为空")
+}else{
+         $('#loading').css("display","flex");
+         
+         $.when(loadcont(localStorage.getItem('apiurl'),"",$('#u_input').val(),"")).done(function(response){data_list = eval("(" + response + ")");loadconts();$('#loading').css("display","none");});
+}
+  }
+  function get_v_name(v_name){
+    localStorage.setItem('v_name',v_name);
+  }
+  function typenamebox(){
+    if($("#typename_box").css("display")=="none"){
+      $("#typename_box").css("display","flex");
+      $("#nav").css("height","auto");
+    }else{
+      $("#typename_box").hide();
+      $("#nav").css("height","250px");
+    }
+  }
+
+
+</script>
+
+</html>
