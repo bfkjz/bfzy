@@ -1,13 +1,10 @@
 //采集接口
-var vod_url_list={
-    "无尽资源":"https://api.wujinapi.com/api.php",
-    "快播云":"http://www.kuaibozy.com/api.php",
-    "天空云":"https://api.tiankongapi.com/api.php",
-    "百度资源":"https://api.apibdzy.com/api.php",
-    "爱播资源":"https://cj.apiabzy.com/api.php",
-    
-
-}
+    var vod_url_list = {
+        "无尽资源": "https://api.wujinapi.com/api.php",
+        "快播云": "http://www.kuaibozy.com/api.php",
+        "天空云": "https://api.tiankongapi.com/api.php",
+        "百度资源": "https://api.apibdzy.com/api.php",
+    }
 
 //播放解析接口
 var play_url_list={
@@ -16,7 +13,7 @@ var play_url_list={
 }
 
 //代理请求接口
-var proxyurl = "https://apibf.herokuapp.com"; //http://127.0.0.1:1452/222/api.php
+var proxyurl = "http://bfkjz.ueuo.com"; //https://apibf.herokuapp.com
 
 //过滤排除加载类型
 var ex = ["资讯", "公告", "头条", "伦理片", "邵氏电影","三级片","体育赛事","伦理","论理","倫理","福利","激情","理论","写真","情色","美女","街拍","赤足","性感","里番","VIP"];
