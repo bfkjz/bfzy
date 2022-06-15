@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
+  <script src="./config.js"></script>
+  <title></title>
+  <link href="./css/main.css" rel="stylesheet" type="text/css">
+  <script src="https://cdn.jsdelivr.net/gh/bfkjz/Ed/js/bftip.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+</head>
+
+<body>
+  <div id="loading" style="
+  width: 100%;
+  height: 100%;
+  background: #4a484845;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+">
+    <div class="loading" >
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+  <div id="content"></div>
+  <div id="go_top" class="box">回到顶部</div>
+</body>
+<script>
+  var videoid= "";
+  $(function () {
+    $("title").text(localStorage.getItem('v_name') + " - 缤纷资源");
+    var request_ = new Object();
+    request_ = GetRequest();
+    videoid = request_["video_id"];
+    
+    //alert(videoid);
+
+    // var interface_url = localStorage.getItem('play_apiurl');
+    $.when(v_ajax()).done(function(response){data_list = response;loadinfo();$('#loading').css("display","none");});
+
+  })
+
+  var data_list = "";
+  var getapiurl=localStorage.getItem('apiurl');
+  var apiurl = getapiurl;
+
+
+  function v_ajax(){
+    $('#loading').css("display","flex");
+    var defer = $.Deferred();
+    $.ajax({
+      url: proxyurl + '?' + apiurl + '/provide/vod/?ac=detail&ids=' + videoid,
+      // async: false,
+      type: 'get',
+      success: function (response) {
+        data_list = eval("(" + response + ")");
+        defer.resolve(data_list);
+      }
+    });
+    return defer.promise();
+
+  }
+  var videotop ="";
+  function loadinfo(){
+    var data_list_list = data_list.list[0];
+    // console.log(data_list);
+    var textareas = document.createElement("textarea");
+    textareas.id = "copy_all";
+    textareas.style.display = "none";
+    document.body.appendChild(textareas);
+    var video_box =
+      `
+<div class="video_box box">
+<div class="video_img_box"><img src="${data_list_list.vod_pic}" alt/></div>
+<div class="video_info_box">
+<div class="video_name">
+    ${data_list_list.vod_name}
+    <span class="video_remarks" style="margin-left: 7px;">
+        ${data_list_list.vod_remarks}
+    </span>
+    <span class="video_score">
+        ${data_list_list.vod_score}
+    </span>
+</div>
+<div class="video_info">
+    <span>又名：${data_list_list.vod_sub}</span>
+    <span>分类：${data_list_list.type_name}</span>
+    <span>导演：${data_list_list.vod_director}</span>
+    <span>主演：${data_list_list.vod_actor}</span>
+    <span>编剧：${data_list_list.vod_writer}</span>
+    <span>地区：${data_list_list.vod_area}</span>
+    <span>类型：${data_list_list.vod_class}</span>
+    <span>语言：${data_list_list.vod_lang}</span>
+    <span>上映：${data_list_list.vod_year}</span>
+    <span>集数：${data_list_list.vod_total}</span>
+    <span>更新时间：${data_list_list.vod_time}</span>
+    <span style="margin-top: 10px;"><a href="https://movie.douban.com/subject/${data_list_list.vod_douban_id}" target="_blank">豆瓣查看</a></span>
+</div>
+</div>
+</div>
+`;
+    $('#content').append(video_box);
+    var video_blurb =
+      `
+<div class="video_blurb box">
+<p style="font-weight: 600;margin-left: 10px;">剧集介绍</p>
+<p style="background: #83838312;padding: 10px 15px;margin: 5px;border-radius: 12px;">${data_list_list.vod_blurb}</p>
+</div>
+`;
+    $('#content').append(video_blurb);
+    $('#content').append(`<div class="play_video box" id="PlayVideo"><div id="playbox"></div><div style="width:100%;margin-top: 10px;"><h3 style="margin: 2px;color: #383333;">${data_list_list.vod_name}<span id="vod_titile"></span></h3><div style="margin: 2px;color: #858585;font-size: 0.9em;display: flex;" id="videoinfobox">类型：<span style="color: #383333;">${data_list_list.vod_class}</span>        地区：<span style="color: #383333;">${data_list_list.vod_area}</span>        年份：<span style="color: #383333;">${data_list_list.vod_year}</span><span style="flex: 1 1 auto;text-align: end;padding: 3px 4px;"><span style="color: #ffffff;cursor: pointer;background: #ffb9b9;padding: 3px 5px;font-size: 0.9em;border-radius: 4px;font-weight: 600;" onclick="off_play()">关闭</span></span></div></div></div>`);
+
+    var vod_play_url = data_list_list.vod_play_url;
+    var play_lists = vod_play_url.split("$$$");
+
+    var video_play_numlist =
+      `
+<div class="video_play_numlist box">
+<p style="font-weight: 600;margin-left: 10px;">播放列表</p>
+<div class="play_num">
+<div id="play_num_sort" style="text-align: end;position: relative;margin-bottom: 10px;"><div style="padding: 5px 10px;font-size: 0.5em;left: 0;position: absolute;color: #999;">播放接口:</div><select id="select" style="padding: 5px 10px;width: auto;font-size: 0.5em;left: 70px;position: absolute;font-weight: 600;color: #463f3f;"></select><span onclick="px()" style="padding: 3px 5px;border-radius: 5px;background: #e2fbff;font-size: 0.9em;font-weight: 600;color: #0ca379;cursor: pointer;">升序</span></div>
+`;
+    var play_list1 =
+      `
+<div class="play_num_box">
+`;
+    var play_list2 =
+      `
+<div class="play_num_box">
+`;
+
+    var dl_list =
+      `
+<div class="dl_num">
+<div style="text-align: end;"><span onclick="copy_all_links()" style="padding: 3px 5px;border-radius: 5px;background: #e2fbff;font-size: 0.9em;font-weight: 600;color: #0ca379;cursor: pointer;">复制全部</span></div>
+`;
+
+    for (i = 0; i < play_lists.length; i++) {
+      var play_list = play_lists[i].split("#");
+      for (x = 0; x < play_list.length; x++) {
+        var episode = play_list[x].split("$");
+        var ifm3u8 = episode[1].split(".");
+        if (ifm3u8[ifm3u8.length - 1] == "m3u8" || ifm3u8[ifm3u8.length - 1] == "M3U8") {
+          play_list1 += `<a href="javascript:void(0)" onclick="PlayVideo('1','${episode[1]}','${episode[0]}')">${episode[0]}</a>`;
+          dl_list += `<p onclick="copy_link('${episode[1]}')">${episode[0]}：${episode[1]}</p>`;
+          $('#copy_all').append(episode[1]+'\n');
+        } else {
+          play_list2 += `<a href="javascript:void(0)" onclick="PlayVideo('0','${episode[1]}','${episode[0]}')">${episode[0]}</a>`;
+        }
+      }
+      // video_play_numlist +=`</div>`;
+    }
+    play_list1 += `</div><hr style="border: 0;border-top: 2px dashed #a2a9b6;width: 90%;">`;
+    play_list2 += `</div>`;
+    $('#content').append(video_play_numlist + play_list1 + play_list2 + "</div></div>");
+
+    for (play_apiname in play_url_list) {
+      $('#select').append(`<option value="${play_url_list[play_apiname]}">${play_apiname}</option>`);
+    }
+    localStorage.setItem('play_apiurl',$('#select option').attr("value"));
+    // interface_url = localStorage.getItem('play_apiurl');
+
+    var dl_num_list =
+      `
+<div class="video_dl_num_list box">
+<p style="font-weight: 600;margin-left: 10px;">下载列表</p>
+
+`;
+    $('#content').append(dl_num_list + dl_list + "</div>");
+
+    //回到顶部
+    $(window).scroll(function () {
+      var topp = $('html,body').scrollTop();
+      if (topp > 500) {
+        $("#go_top").css("display", "block");
+
+      } else { $("#go_top").css("display", "none"); };
+
+      videotop = $("#PlayVideo").offset().top;
+      // console.log(videotop);
+    })
+    $("#go_top").on("click", function () {
+      $("html,body").animate({ scrollTop: 0 }, 500);
+
+    })
+    //
+
+    $("#select").change(function () {
+        localStorage.setItem('play_apiurl',$("#select option:selected").val().toString());
+    });
+
+
+  }
+
+  function GetRequest() {
+    var url = location.search; //获取url中"?"符后的字串 
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+      var str = url.substr(1);
+      strs = str.split("&");
+      for (var i = 0; i < strs.length; i++) {
+        theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+      }
+    }
+    return theRequest;
+  }
+
+  function PlayVideo(type,url,nums) {
+    var playurl = "";
+    if(type == "1"){
+      playurl = localStorage.getItem('play_apiurl') + url;
+    }else{
+      playurl = url;
+    };
+    $("#playbox").html("");
+    $("#vod_titile").html("");
+    $("#PlayVideo").css({ "margin": "10px", "padding": "10px", "height": "475px" });
+    var iframe =
+      `
+<iframe src="${playurl}" frameBorder = 0 allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
+`;
+   var playnum =
+`
+<span style="font-size:0.8em;color:#adadad">${nums}</span>
+`;
+    $("#playbox").append(iframe);
+   $("#vod_titile").append(playnum);
+    $("html,body").animate({ scrollTop: videotop }, 500);
+
+  }
+
+  function off_play() {
+    $("#PlayVideo").css({ "margin": "0", "padding": "0", "height": "0" });
+    $("#playbox").html("");
+  }
+
+  function px() {
+    if ($("#play_num_sort span").text() == "升序") {
+      $("#play_num_sort span").text("降序");
+      $(".play_num_box").css({ "flex-wrap": "wrap-reverse", "flex-direction": "row-reverse" });
+    } else {
+      $("#play_num_sort span").text("升序");
+      $(".play_num_box").css({ "flex-wrap": "wrap", "flex-direction": "row" });
+    }
+
+  }
+
+  function copy_link(link_text) {
+    const textarea = document.createElement("textarea");
+    document.body.appendChild(textarea);
+    textarea.value = link_text;
+    textarea.select();
+    try {
+      if (document.execCommand("copy", false)) {
+        bftip("1", "复制成功")
+        console.log("复制成功");
+      } else {
+        console.log("复制失败");
+        bftip("2", "复制失败")
+      }
+    } catch (error) {
+      console.log(error, "error")
+    } finally {
+      textarea.remove();
+    }
+  }
+
+
+  function copy_all_links() {
+    const textarea = document.createElement("textarea");
+    document.body.appendChild(textarea);
+    textarea.value = $("#copy_all").text();
+    textarea.select();
+    try {
+      if (document.execCommand("copy", false)) {
+        bftip("1", "复制成功")
+        console.log("复制成功");
+      } else {
+        console.log("复制失败");
+        bftip("2", "复制失败")
+      }
+    } catch (error) {
+      console.log(error, "error")
+    } finally {
+      textarea.remove();
+    }
+
+  }
+
+</script>
+
+</html>
