@@ -5,7 +5,7 @@
 广东电视台移动频道,http://sztctv.gdtv.cn/live/ydpd.m3u8?auth_key=1655280681-0-0-1f630bd693619e6e1e2c94d17af62ff5
 嘉佳卡通频道,http://kttctv.gdtv.cn/live/jjkt.m3u8?auth_key=1655280295-0-0-eea80435b27a368ef6df42664268167e
 TVS1广东经济科教频道,http://jjtctv.gdtv.cn/live/jjkj.m3u8?auth_key=1655278803-0-0-c036a2f39a3b3a5dcea67c5f44e104ef
-TVS2南方卫视TVS2,http://nftctv.gdtv.cn/live/nfws.m3u8?auth_key=1655279346-0-0-a8c107314988b6db74e4e3eeb71faa85
+TVS2南方卫视TVS2,http://nftctv.gdtv.cn/live/nfws.m3u8?auth_key=1655708000-0-0-9a5a066b4d4e32eb80ca61d57b445b5d
 TVS3广东综艺频道,http://zytctv.gdtv.cn/live/gdzy.m3u8?auth_key=1655278804-0-0-9d21ef83b6ea8e4cf0635309c33f81e6
 TVS4广东影视频道,http://ystctv.gdtv.cn/live/gdys.m3u8?auth_key=1655278803-0-0-1c96a2b281ad0fc11867abb8c3f41706
 TVS5广东少儿频道,http://setctv.gdtv.cn/live/gdse.m3u8?auth_key=1655279137-0-0-4a9227c1a55a9dbbfd8a66a6fedcc69c
