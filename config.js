@@ -1,9 +1,9 @@
 //采集接口
     var vod_url_list = {
+        "百度资源": "https://api.apibdzy.com/api.php",
         "无尽资源": "https://api.wujinapi.com/api.php",
         "快播云": "http://www.kuaibozy.com/api.php",
         "天空云": "https://api.tiankongapi.com/api.php",
-        "百度资源": "https://api.apibdzy.com/api.php",
     }
 
 //播放解析接口
